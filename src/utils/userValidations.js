@@ -2,17 +2,32 @@
 class UserValidations {
     constructor(){}
     validate(form) {
-        let globalRut = null
+        let globalUser =[]
+        let globalObject = null;
+        let globalRut = null;
+        let globalName = null;
         //var globalUser = null
-        const varkey = Object.keys(form);
-        const varmap = varkey.map(inputName => { 
+        globalName = Object.keys(form).map(inputName => { 
+        
             if(inputName === 'rut') {
                 const isValidRut = this.validateRut(form[inputName][0])
-                globalRut = Object.assign({},isValidRut)
-                return isValidRut;
+                globalRut = Object.values(isValidRut)
+                globalUser.push(globalRut[1]);
             }
+            if(inputName === 'userName') {
+                const isValidName = this.validateName(form[inputName][0])
+                globalName = Object.values(isValidName)
+                //console.log(globalName,"globalname")
+                globalUser.push(globalName[1]);
+                //console.log(globalUser,"globaluser")
+            }
+          //console.log(globalUser),"retorno")
+           return globalUser
+
         })
-        return globalRut
+       //console.log(globalName[0],"globalName")
+        return globalName
+        
     }
 
     validateName(name) {
@@ -30,18 +45,18 @@ class UserValidations {
         } else {
             return {
                 status: true,
-                err: 'Nombre valido'
+                err: ''
             }
         }
     }
 
-    minCharacters(string) {
+    /*minCharacters(string) {
         if(string.length < 3) {
             return 'Debe tener mínimo 3 caracteres'
         } else {
             return ''
         }
-    }
+    }*/
 
     validateRut(name){
         
@@ -61,7 +76,7 @@ class UserValidations {
         } else {
             return {
                 status: true,
-                err: 'rut correcto',
+                err: '',
             }
         }
 

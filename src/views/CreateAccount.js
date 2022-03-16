@@ -12,29 +12,37 @@ const CreateAccount = () => {
         email: ['', ''],
     })
 
-    const [err, setErr] = useState('');
+    const [err, setErr] = useState([]);
 
     const userValidations = new UserValidations();
 
     const handlerForm = (target) => {
-        console.log("🚀 ~ file: CreateAccount.js ~ line 15 ~ handlerForm ~ target", target.value)
-        console.log("🚀 ~ file: CreateAccount.js ~ line 15 ~ handlerForm ~ target", target.name);
-        const isInputValid = userValidations.minCharacters(target.value);
-        setUser({ ...user, [target.name]: [target.value, isInputValid] })
+       
+        //const isInputValid = userValidations.minCharacters(target.value);
+        const isValidForm = userValidations.validate(user);
+        setUser({ ...user, [target.name]: [target.value, isValidForm[0]] })
+        console.log(isValidForm[0], "lo que llega")
+        //setErr(isValidForm[0].err )
     }
     const createAccount = (e) => {
         e.preventDefault();
-        const isValidForm = userValidations.validate(user);
-      
-        if(!isValidForm.status) {
-            setErr(isValidForm.err)
+       /* const isValidForm = userValidations.validate(user);
+      console.log(isValidForm[0],"retorno final")
+      isValidForm.forEach(function(element){
+          console.log(element.status,"statusss")
+
+        if(!element.status ) {
+          setErr(element.err)
         } else {
-            setErr(isValidForm.err)
+           setErr(element.err)
         }
+        console.log(element.err, "err dentro del for")
+    })
+    console.log(err, "err con estado final")*/
     }
     
     useEffect(() => {
-        console.log("🚀 ~ file: CreateAccount.js ~ line 24 ~ CreateAccount ~ user", Object.keys(user));
+        console.log(Object.keys(user));
         
     }, [user]);
 
@@ -47,9 +55,11 @@ const CreateAccount = () => {
                     <label htmlFor="userName">Nombre:</label>
                     <input type="text" name="userName" value={user.userName[0]} onChange={(e) => handlerForm(e.target)} />
                     <p className={styles.errMsg}>{user.userName[1]}</p>
+                    
                     <label htmlFor="rut">Rut:</label>
                     <input type="text" name="rut" value={user.rut[0]} onChange={(e) => handlerForm(e.target)} />
                     <p className={styles.errMsg}>{user.rut[1]}</p>
+                   
                     <label htmlFor="password">Password:</label>
                     <input type="text" name="password" value={user.password[0]} onChange={(e) => handlerForm(e.target)} />
                     <p className={styles.errMsg}>{user.password[1]}</p>
@@ -61,7 +71,7 @@ const CreateAccount = () => {
                     <p className={styles.errMsg}>{user.email[1]}</p>
                     <button type="submit">Crear cuenta</button>
                 </form>
-                <h3 className={styles.errMsg}>{err}</h3>
+                
             </div>
         </div>
     )
